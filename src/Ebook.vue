@@ -9,7 +9,7 @@
         <div class="right" @click="nextPage"></div>
       </div>
     </div>
-    <menu-bar :isShow="isShow" ref="MenuBar"></menu-bar>
+    <menu-bar :isShow="isShow" :fontSizeList="fontSizeList" :defalutFontSize ="defalutFontSize" @setFontSize="setFontSize" ref="MenuBar"></menu-bar>
   </div>
 </template>
 
@@ -26,7 +26,16 @@ export default {
     },
     data(){
         return{
-     isShow:false
+        isShow:false,
+        fontSizeList:[
+          {fontSize:12},
+          {fontSize:14},
+          {fontSize:16},
+          {fontSize:18},
+          {fontSize:20},
+          {fontSize:22},
+          {fontSize:24}
+        ],defalutFontSize:12
         }
     },
   methods: {
@@ -41,6 +50,8 @@ export default {
       });
       //通过Rendition.display渲染电子书
       this.rendition.display();
+      this.themes = this.rendition.themes;
+      this.themes.fontSize(this.defalutFontSize)
     },
     prevPage() {
       console.log(this.rendition);
@@ -66,6 +77,11 @@ export default {
         if(!this.isShow){
            this.$refs.MenuBar.hideSettingFontSize();
         }
+    },setFontSize(fontSize){
+      this.defalutFontSize = fontSize;
+      if(this.themes){
+      this.themes.fontSize(fontSize+"px")
+      }
     }
   },
   mounted() {
